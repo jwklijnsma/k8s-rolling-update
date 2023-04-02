@@ -12,15 +12,15 @@
 - name: Update Node
   when:
     # When status.conditions[x].type == Ready then check stats.conditions[x].status for True|False
-    #- kubectl_get_node['stdout'] | from_json | json_query("status.conditions[?type == 'Ready'].status")
+    - kubectl_get_node['stdout'] | from_json | json_query("status.conditions[?type == 'Ready'].status")
     # If spec.unschedulable is defined then the node is cordoned
-    #- not (kubectl_get_node['stdout'] | from_json).spec.unschedulable is defined
+    - not (kubectl_get_node['stdout'] | from_json).spec.unschedulable is defined
   block:
-    #- name: Cordon & drain node
-    #  include_tasks: drain.yml
+    - name: Cordon & drain node
+      include_tasks: drain.yml
 
     - name: Upgrade the Operating System
       include_tasks: ubuntu.yml
 
-    #- name: Uncordon node
-    #  include_tasks: uncordon.yml
+    - name: Uncordon node
+      include_tasks: uncordon.yml
