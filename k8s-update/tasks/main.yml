@@ -10,11 +10,6 @@
   changed_when: false
 
 - name: Update Node
-  when:
-    # When status.conditions[x].type == Ready then check stats.conditions[x].status for True|False
-    #- kubectl_get_node['stdout'] | from_json | json_query("status.conditions[?type == 'Ready'].status")
-    # If spec.unschedulable is defined then the node is cordoned
-    #- not (kubectl_get_node['stdout'] | from_json).spec.unschedulable is defined
   block:
     - name: Cordon & drain node
       include_tasks: drain.yml
